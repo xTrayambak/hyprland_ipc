@@ -455,7 +455,6 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
 proc dispatch*(dispatchType: DispatchType) =
   let dispatchStr = "dispatch " & dispatchType.genString(true)
 
-  echo dispatchStr
   let msg = writeToSocket(
     getSocketPath(kCommand),
     command(
