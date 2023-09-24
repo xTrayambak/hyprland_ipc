@@ -41,7 +41,14 @@ proc `$`*(value: OptionValue): string =
 proc `$`*(keyword: Keyword): string =
   fmt"keyword {keyword.option} {keyword.value}"
 
-proc setKeyword*(key: string, value: float | int | string) =
+proc setKeyword*(key: string, value: bool | float | int | string) =
+  when value is bool:
+    let val = case value
+    of true: "true"
+    of false: "false"
+
+    setKeyword(key, val)
+
   when value is float:
     let msg = writeToSocket(
       getSocketPath(kCommand),
