@@ -8,9 +8,10 @@ import std/times, hyprland_ipc/[ctl, dispatch, keyword]
   "Hello from Nim!"
 ) ]#
 
-# setKeyword("decoration:blur:enabled", "true")
+setKeyword("decoration:blur:enabled", false)
 dispatch(
   DispatchType(
-    kind: ToggleFullscreen
+    kind: Exec,
+    program: "foot"
   )
 )

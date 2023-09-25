@@ -14,6 +14,6 @@ dispatch(
 # Make the currently active window toggle its floating state
 dispatch(
   DispatchType(
-    exec: ToggleFloating
+    kind: ToggleFloating
   )
 )

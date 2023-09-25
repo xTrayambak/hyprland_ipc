@@ -450,6 +450,43 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
   of FocusWindow: result = fmt"swapnext{sep}{cmd.fwIdent}"
   of ChangeSplitRatio: result = fmt"splitratio {cmd.csFloat}"
   of ToggleOpaque: result = "toggleopaque"
+  of MoveCursorToCorner: result = fmt"movecursor{sep}{cmd.mcCorner}"
+  of MoveCursor: result = fmt"movecursor{sep}{cmd.mx} {cmd.my}"
+  of WorkspaceOption: result = fmt"workspaceopt{sep}{cmd.wOpts}"
+  of Exit: result = "exit"
+  of ForceRendererReload: result = "forcerendererreload"
+  of MoveWorkspaceToMonitor: result = fmt"moveworkspacetomonitor{sep}{cmd.mwtIdent} {cmd.mwtMonIdent}"
+  of MoveCurrentWorkspaceToMonitor: result = fmt"movecurrentworkspacetomonitor{sep}{cmd.mcwIdent}"
+  of ToggleSpecialWorkspace:
+    if cmd.otsStr.isSome:
+      result = fmt"togglespecialworkspace {cmd.otsStr.get()}"
+    else:
+      result = "togglespecialworkspace"
+  of RenameWorkspace:
+    if cmd.owStr.isSome:
+      result = fmt"renameworkspace{sep}{cmd.rwId} {cmd.owStr.get()}"
+    else:
+      result = fmt"renameworkspace{sep}{cmd.rwId}"
+  of SwapActiveWorkspaces: result = fmt"swapactiveworkspaces{sep}{cmd.sawMonIdent} {cmd.sawMonIdent2}"
+  of BringActiveToTop: result = "bringactivetotop"
+  of SetCursor: result = fmt"{cmd.theme} {cmd.size}"
+  of FocusUrgentOrLast: result = "focusurgentorlast"
+  of ToggleSplit: result = "togglesplit"
+  of SwapWithMaster: result = fmt"swapwithmaster {cmd.swmParam}"
+  of FocusMaster: result = fmt"focusmaster {cmd.fmParam}"
+  of AddMaster: result = "addmaster"
+  of RemoveMaster: result = "removemaster"
+  of OrientationLeft: result = "orientationleft"
+  of OrientationRight: result = "orientationright"
+  of OrientationTop: result = "orientationtop"
+  of OrientationBottom: result = "orientationbottom"
+  of OrientationNext: result = "orientationnext"
+  of OrientationPrev: result = "orientationprev"
+  of ToggleGroup: result = "togglegroup"
+  of ChangeGroupActive: result = fmt"changegroupactive{sep}{cmd.cgaSwitchDir}"
+  of LockGroups: result = fmt"lockgroups{sep}{cmd.lgLockType}"
+  of MoveIntoGroup: result = fmt"moveintogroup{sep}{cmd.gDir}"
+  of MoveOutOfGroup: result = "moveoutofgroup"
   else: discard
 
 proc dispatch*(dispatchType: DispatchType) =
