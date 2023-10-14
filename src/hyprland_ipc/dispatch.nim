@@ -393,7 +393,7 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
   of Custom: 
     result = fmt"{cmd.name}{sep}{cmd.args}"
   of Exec: 
-    result = fmt"exec{sep}{cmd.program}"
+    result = fmt"exec,{cmd.program}"
   of Pass: 
     result = fmt"pass{sep}{cmd.wident}"
   of Global: 
@@ -488,6 +488,9 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
   of MoveIntoGroup: result = fmt"moveintogroup{sep}{cmd.gDir}"
   of MoveOutOfGroup: result = "moveoutofgroup"
   else: discard
+
+proc `$`*(cmd: DispatchType): string =
+  cmd.genString(true)
 
 proc dispatch*(dispatchType: DispatchType) =
   let dispatchStr = "dispatch " & dispatchType.genString(true)

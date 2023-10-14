@@ -82,5 +82,6 @@ proc setKeyword*(key: string, value: bool | float | int | string) =
       )
     )
 
+    echo msg.response
     if not msg.success:
       raise newException(HyprlandDefect, "keyword set command returned non-ok status: " & msg.response)
