@@ -393,7 +393,7 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
   of Custom: 
     result = fmt"{cmd.name}{sep}{cmd.args}"
   of Exec: 
-    result = fmt"exec,{cmd.program}"
+    result = fmt"exec{sep}{cmd.program}"
   of Pass: 
     result = fmt"pass{sep}{cmd.wident}"
   of Global: 
