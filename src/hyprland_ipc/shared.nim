@@ -30,7 +30,11 @@ proc getSocketPath*(kind: SocketKind): string =
     of kListener:
       ".socket2.sock"
 
-  fmt"/tmp/hypr/{hyprInstanceSig}/{socketName}"
+  when not defined(useOldIpcPath):
+    let runtimeDir = getEnv("XDG_RUNTIME_DIR", "/run/user/1000")
+    result = fmt"{runtimeDir}/hypr/{hyprInstanceSig}/{socketName}"
+  else:
+    result = fmt"/tmp/hypr/{hyprInstanceSig}/{socketName}"
 
 proc writeToSocket*(
   path: string,
