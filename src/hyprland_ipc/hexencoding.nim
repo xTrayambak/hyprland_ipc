@@ -6,10 +6,14 @@
 
 proc nibbleFromChar(c: char): int =
   case c
-  of '0'..'9': result = (ord(c) - ord('0'))
-  of 'a'..'f': result = (ord(c) - ord('a') + 10)
-  of 'A'..'F': result = (ord(c) - ord('A') + 10)
-  else: discard 255
+  of '0' .. '9':
+    result = (ord(c) - ord('0'))
+  of 'a' .. 'f':
+    result = (ord(c) - ord('a') + 10)
+  of 'A' .. 'F':
+    result = (ord(c) - ord('A') + 10)
+  else:
+    discard 255
 
 proc decodeSeq*(str: string): seq[char] =
   var length = len(str) div 2
@@ -30,11 +34,12 @@ proc decode*(str: string): string =
   return cast[string](bytes)
 
 proc nibbleToChar(nibble: int): char =
-  const byteMap = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
+  const byteMap =
+    ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
   const byteMapLen = len(byteMap)
   try:
     if nibble < byteMapLen:
-      return byteMap[nibble];
+      return byteMap[nibble]
   except IndexDefect:
     echo "Hex string character out of range for valid hex char"
 

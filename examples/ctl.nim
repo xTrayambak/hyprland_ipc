@@ -1,7 +1,7 @@
-#[
-  Example of almost everything src/hyprland_ipc/ctl.nim provides
-]#
-import std/times, hyprland_ipc/ctl
+## Example of almost everything the `ctl` module provides.
+
+import std/times
+import hyprland_ipc/ctl
 
 # Reload Hyprland
 reload()
@@ -13,7 +13,7 @@ kill()
 setCursor("Breeze", 16)
 
 # Send a notification saying "Hello from Nim!" that will linger for 30 seconds.
-# this is not sent through your notification daemon, rather through Hyprland's
+# This is not sent through your notification daemon, rather through Hyprland's
 # built-in notifications system
 notify(
   NoIcon,

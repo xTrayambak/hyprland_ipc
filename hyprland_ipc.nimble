@@ -10,4 +10,8 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.6.14"
-requires "jsony"
+requires "jsony >= 1.1.5"
+taskRequires "fmt", "nph >= 0.5.1"
+
+task fmt, "Format code":
+  exec "nph src/"
