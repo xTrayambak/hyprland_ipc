@@ -5,7 +5,7 @@ const
   HYPR_UNSET_INT*   = -9223372036854775807
 
 type
-  OptionRaw* = ref object of RootObj
+  OptionRaw* = ref object
     option*: string
     intVal*: int
     floatVal*: float
@@ -16,7 +16,7 @@ type
     kFloat
     kString
 
-  OptionValue* = ref object of RootObj
+  OptionValue* = ref object
     case kind*: OptionValueKind
     of kInt:
       intVal*: int
@@ -25,7 +25,7 @@ type
     of kString:
       stringVal*: string
 
-  Keyword* = ref object of RootObj
+  Keyword* = ref object
     option*: string
     value*: OptionValue
 

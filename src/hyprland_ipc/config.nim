@@ -8,7 +8,7 @@ type
     mCtrl
     mNone
 
-  Key* = ref object of RootObj
+  Key* = ref object
     mods*: seq[Mod]
     key*: string
 
@@ -18,7 +18,7 @@ type
     fE
     fR
 
-  Binding* = ref object of RootObj
+  Binding* = ref object
     mods*: seq[Mod]
     key*: Key
     flags*: seq[Flag]

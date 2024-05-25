@@ -62,7 +62,7 @@ type
     Confused = 4
     Ok = 5
 
-  Color* = ref object of RootObj
+  Color* = ref object
     r*: uint8
     g*: uint8
     b*: uint8
@@ -104,7 +104,7 @@ type
     kActiveBorderColor
     kInactiveBorderColor
 
-  Prop* = ref object of RootObj
+  Prop* = ref object
     case kind*: PropKind
     of kAnimStyle:
       style*: string

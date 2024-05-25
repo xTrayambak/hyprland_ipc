@@ -16,7 +16,7 @@ type
     mpMaster
     mpAuto
 
-  WindowIdentifier* = ref object of RootObj
+  WindowIdentifier* = ref object
     case kind*: WindowIdentifierKind
     of kAddress:
       address*: Address
@@ -42,7 +42,7 @@ type
     kDelta
     kExact
 
-  Position* = ref object of RootObj
+  Position* = ref object
     case kind*: PositionKind
     of kDelta:
       dx*: int16
@@ -82,7 +82,7 @@ type
     wkEmpty
     wkName
 
-  WorkspaceIdentifier* = ref object of RootObj
+  WorkspaceIdentifier* = ref object
     case kind*: WorkspaceIdentifierKind
     of wkWorkspaceId:
       wid*: int32
@@ -99,7 +99,7 @@ type
     of wkName:
       name*: string
 
-  WorkspaceIdentifierWithSpecial* = ref object of RootObj
+  WorkspaceIdentifierWithSpecial* = ref object
     case kind*: WorkspaceIdentifierWithSpecialKind
     of kWorkspaceId:
       wId*: int32
@@ -122,7 +122,7 @@ type
     ikCurrent
     ikRelative
 
-  MonitorIdentifier* = ref object of RootObj
+  MonitorIdentifier* = ref object
     case kind*: MonitorIdentifierKind
     of ikDirection:
       direction*: Direction
@@ -138,7 +138,7 @@ type
     mkMonitor
     mkDirection
 
-  WindowMove* = ref object of RootObj
+  WindowMove* = ref object
     case kind*: WindowMoveKind
     of mkMonitor:
       monitor*: MonitorIdentifier
@@ -218,7 +218,7 @@ type
     Unlock
     ToggleLock
 
-  DispatchType* = ref object of RootObj
+  DispatchType* = ref object
     case kind*: DispatchTypeKind
     of Custom:
       name*: string
