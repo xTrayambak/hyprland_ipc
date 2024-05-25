@@ -8,7 +8,7 @@ type
     kJson
     kEmpty
 
-  CommandContent* = ref object of RootObj
+  CommandContent* = object
     kind*: CommandKind
     data*: string
 
@@ -36,11 +36,9 @@ proc getSocketPath*(kind: SocketKind): string =
   else:
     result = fmt"/tmp/hypr/{hyprInstanceSig}/{socketName}"
 
-proc writeToSocket*(
-  path: string,
-  content: CommandContent
-): tuple[success: bool, response: string] =
+proc sendRequestAndReadReply(path: string, content: CommandContent): string =
   let socket = newSocket(AF_UNIX, SOCK_STREAM, IPPROTO_IP)
+  defer: close socket
 
   try:
     socket.connectUnix(path)
@@ -49,12 +47,26 @@ proc writeToSocket*(
 
   socket.send(content.data)
 
-  var response = socket.recv(100)
+  var response: string
+  var bytesRead = 8192
+  while bytesRead == 8192:
+    bytesRead = socket.recv(response, BUF_SIZE)
+    result.add response
 
-  if response != "ok":
-    return (success: false, response: response)
-  
-  return (success: true, response: "ok")
+proc writeToSocket*(
+  path: string,
+  content: CommandContent
+): tuple[success: bool, response: string] =
+  let response = sendRequestAndReadReply(path, content)
+  return (response == "ok", response)
+
+proc writeJsonCmdToSocket*(
+  path: string,
+  content: CommandContent
+): tuple[success: bool, response: string] =
+
+  let response = sendRequestAndReadReply(path, content)
+  return (response != "", response)
 
 proc command*(kind: CommandKind, data: string): CommandContent =
   CommandContent(
