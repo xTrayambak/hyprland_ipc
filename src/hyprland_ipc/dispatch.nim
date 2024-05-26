@@ -487,6 +487,7 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
   of LockGroups: result = fmt"lockgroups{sep}{cmd.lgLockType}"
   of MoveIntoGroup: result = fmt"moveintogroup{sep}{cmd.gDir}"
   of MoveOutOfGroup: result = "moveoutofgroup"
+  of KillActiveWindow: result = "killactive"
   else: discard
 
 proc `$`*(cmd: DispatchType): string =
