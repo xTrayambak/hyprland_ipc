@@ -28,15 +28,15 @@ type
       pid*: uint32
 
   FullscreenType* = enum
-    Real
-    Maximize
-    NoParam
+    Real = "0"
+    Maximize = "1"
+    NoParam = ""
 
   Direction* = enum
-    Up
-    Down
-    Right
-    Left
+    Up = "u"
+    Down = "d"
+    Right = "r"
+    Left = "l"
 
   PositionKind* = enum
     kDelta
@@ -52,16 +52,16 @@ type
       ey*: int16
 
   CycleDirection* = enum
-    Next
-    Previous
+    Next = ""
+    Previous = "prev"
 
   WindowSwitchDirection* = enum
-    Back
-    Forward
+    Back = "b"
+    Forward = "f"
 
   WorkspaceOptions* = enum
-    AllPseudo
-    AllFloat
+    AllPseudo = "allpseudo"
+    AllFloat = "allfloat"
 
   WorkspaceIdentifierWithSpecialKind* = enum
     kWorkspaceId
@@ -329,37 +329,6 @@ proc `$`*(wIdent: WorkspaceIdentifierWithSpecial): string =
     else: fmt"special"
   of kPrev: "previous"
   of kEmpty: "empty"
-
-proc `$`*(opts: WorkspaceOptions): string =
-  result = case opts
-  of AllPseudo: "allpseudo"
-  of AllFloat: "allfloat"
-
-proc `$`*(sdir: WindowSwitchDirection): string =
-  result = case sdir
-  of Back: "b"
-  of Forward: "f"
-
-proc `$`*(cdir: CycleDirection): string =
-  result = case cdir
-  of Next: ""
-  of Previous: "prev"
-
-proc `$`*(dir: Direction): string =
-  result = case dir
-  of Up: "u"
-  of Down: "d"
-  of Left: "l"
-  of Right: "r"
-
-proc `$`*(ft: FullscreenType): string =
-  result = case ft
-  of Real:
-    "0"
-  of Maximize:
-    "1"
-  of NoParam:
-    ""
 
 proc `$`*(ident: WindowIdentifier): string =
   result = case ident.kind:
