@@ -1,4 +1,5 @@
-import std/[net, os, strformat], hexencoding
+import std/[net, os, strformat, strutils]
+import hexencoding
 
 const BUF_SIZE* = 8192
 
@@ -66,7 +67,8 @@ proc sendJsonRequest*(
 ): tuple[success: bool, response: string] =
 
   let response = sendRequestAndReadReply(path, content)
-  return (response != "", response)
+  # On success Json commands will return json (that starts with the below chars), anything else is an error string
+  return (response[0] in {'\"', '{', '['}, response) 
 
 proc command*(kind: CommandKind, data: string): CommandContent =
   CommandContent(
