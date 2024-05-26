@@ -60,7 +60,7 @@ proc writeToSocket*(
   let response = sendRequestAndReadReply(path, content)
   return (response == "ok", response)
 
-proc writeJsonCmdToSocket*(
+proc sendJsonRequest*(
   path: string,
   content: CommandContent
 ): tuple[success: bool, response: string] =
