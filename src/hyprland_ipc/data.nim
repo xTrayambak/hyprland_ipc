@@ -167,7 +167,7 @@ proc getDataCmdJson(cmd: DataCommand): string =
   let msg = sendJsonRequest(getSocketPath(kCommand), command(kJson, dataCmdString))
 
   if not msg.success:
-    raise newException(HyprlandDefect, fmt"{cmd} command returned non-ok status: {msg.response}")
+    raise newException(CommandError, fmt"{cmd} command returned non-ok status: {msg.response}")
   else:
     return msg.response
 

@@ -1,5 +1,5 @@
 import std/[options, strutils, strformat]
-import shared
+import ./shared
 
 type
   WindowIdentifierKind* = enum
@@ -544,5 +544,5 @@ proc dispatch*(dispatchType: DispatchType) =
 
   if not msg.success:
     raise newException(
-      HyprlandDefect, "dispatch command returned non-ok status: " & msg.response
+      CommandError, "dispatch command returned non-ok status: " & msg.response
     )
