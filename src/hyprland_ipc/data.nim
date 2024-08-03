@@ -1,4 +1,6 @@
-import jsony, shared, strformat, tables
+import std/[strformat, tables]
+import pkg/jsony
+import shared
 
 type
   DataCmdKind* = enum
@@ -59,8 +61,8 @@ type
     monitor*: int
     class*, title*, initialClass*, initialTitle*: string
     pid*: int
-    xwayland*, pinned*, fullscreen*: bool
-    fullscreenMode*: int # TODO: Find out what this int means and make it an enum
+    xwayland*, pinned*: bool
+    fullscreen*: int
     fakeFullscreen*: bool
     grouped*: seq[string] # List of address hex strings that this window is grouped with
     swallowing*: string # This seems to be an address of the swallowed window or 0x0 when not swallowing
