@@ -1,6 +1,6 @@
 import std/[strformat, tables]
 import pkg/jsony
-import shared
+import ./shared
 
 type
   DataCmdKind* = enum
@@ -164,10 +164,7 @@ proc `$`*(cmd: DataCommand): string =
 proc getDataCmdJson(cmd: DataCommand): string =
   let dataCmdString = fmt"j/{cmd}"
 
-  let msg = sendJsonRequest(
-    getSocketPath(kCommand),
-    command(kJson, dataCmdString)
-  )
+  let msg = sendJsonRequest(getSocketPath(kCommand), command(kJson, dataCmdString))
 
   if not msg.success:
     raise newException(HyprlandDefect, fmt"{cmd} command returned non-ok status: {msg.response}")

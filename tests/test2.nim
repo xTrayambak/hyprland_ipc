@@ -1,4 +1,5 @@
-import std/times, hyprland_ipc/[ctl, dispatch, keyword]
+import std/times 
+import hyprland_ipc/[ctl, dispatch, keyword]
 
 # reload()
 #[notify(

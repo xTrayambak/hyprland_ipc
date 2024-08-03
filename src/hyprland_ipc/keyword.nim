@@ -1,8 +1,10 @@
-import std/[strutils, strformat], shared, jsony
+import std/[strutils, strformat]
+import pkg/[jsony]
+import ./shared
 
 const
   HYPR_UNSET_FLOAT* = -340282346638528859811704183484516925440.0
-  HYPR_UNSET_INT*   = -9223372036854775807
+  HYPR_UNSET_INT* = -9223372036854775807
 
 type
   OptionRaw* = ref object
@@ -30,22 +32,23 @@ type
     value*: OptionValue
 
 proc `$`*(value: OptionValue): string =
-  case value.kind:
-    of kInt:
-      return intToStr(value.intVal)
-    of kFloat:
-      return $value.floatVal
-    of kString:
-      return value.stringVal
+  case value.kind
+  of kInt:
+    return intToStr(value.intVal)
+  of kFloat:
+    return $value.floatVal
+  of kString:
+    return value.stringVal
 
 proc `$`*(keyword: Keyword): string =
   fmt"keyword {keyword.option} {keyword.value}"
 
 proc setKeyword*(key: string, value: bool | float | int | string) =
   when value is bool:
-    let val = case value
-    of true: "true"
-    of false: "false"
+    let val =
+      case value
+      of true: "true"
+      of false: "false"
 
     setKeyword(key, val)
 
@@ -53,35 +56,39 @@ proc setKeyword*(key: string, value: bool | float | int | string) =
     let msg = writeToSocket(
       getSocketPath(kCommand),
       command(
-        kEmpty,
-        $Keyword(option: key, value: OptionValue(kind: kFloat, floatVal: value))
-      )
+        kEmpty, $Keyword(option: key, value: OptionValue(kind: kFloat, floatVal: value))
+      ),
     )
-    
+
     if not msg.success:
-      raise newException(HyprlandDefect, "keyword set command returned non-ok status: " & msg.response)
+      raise newException(
+        HyprlandDefect, "keyword set command returned non-ok status: " & msg.response
+      )
 
   when value is int:
     let msg = writeToSocket(
       getSocketPath(kCommand),
       command(
-        kEmpty,
-        $Keyword(option: key, value: OptionValue(kind: kInt, intVal: value))
-      )
+        kEmpty, $Keyword(option: key, value: OptionValue(kind: kInt, intVal: value))
+      ),
     )
 
     if not msg.success:
-      raise newException(HyprlandDefect, "keyword set command returned non-ok status: " & msg.response)
+      raise newException(
+        HyprlandDefect, "keyword set command returned non-ok status: " & msg.response
+      )
 
   when value is string:
     let msg = writeToSocket(
       getSocketPath(kCommand),
       command(
         kEmpty,
-        $Keyword(option: key, value: OptionValue(kind: kString, stringVal: value))
-      )
+        $Keyword(option: key, value: OptionValue(kind: kString, stringVal: value)),
+      ),
     )
 
     echo msg.response
     if not msg.success:
-      raise newException(HyprlandDefect, "keyword set command returned non-ok status: " & msg.response)
+      raise newException(
+        HyprlandDefect, "keyword set command returned non-ok status: " & msg.response
+      )
