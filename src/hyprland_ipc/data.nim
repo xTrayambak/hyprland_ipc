@@ -92,7 +92,7 @@ type
 
   LayerEnum* = enum # Enum for future use with LayersOnMonitor
     Background # Wallpaper
-    Bottom # Normal app windows are between Bottom and Tap (but idk what uses Bottom)
+    Bottom # Normal app windows are between Bottom and Top (but idk what uses Bottom)
     Top # Bars and desktop ui (drawn on top of normal apps)
     Overlay # Probably drawn on top of the entire monitor framebuffer
 
@@ -101,7 +101,7 @@ type
     x*, y*, w*, h*: int
     namespace*: string
   # TODO: Currently this matches the json structure given by the layers command, but the structure is a bit hard
-  # to work with. The structure could be changed to layersOnMonitor[monitor][layerEnum], where layerEnum is
+  # to work with. The structure could be changed to layersOnMonitor[monitorID][layerEnum].
   LayersOnMonitor* = Table[string, # Monitor name
                      Table[string, # Levels key
                      Table[string, # Level number (int as string)
