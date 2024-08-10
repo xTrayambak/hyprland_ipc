@@ -17,7 +17,7 @@ type
     Animations = "animations"
     ConfigErrors = "configerrors" # Not implemented
     Decorations = "decorations" # Not implemented
-    GetOption = "getoption" # Getting the actual option value is not implemented yet
+    GetOption = "getoption"
     GlobalShortcuts = "globalshortcuts" # Not implemented, could be useful when apps start using the shortcuts portal
     Instances = "instances" # Not implemented
     Layouts = "layouts"
