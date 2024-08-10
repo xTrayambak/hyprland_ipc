@@ -1,4 +1,4 @@
-import std/[strformat, tables]
+import std/[strformat, tables, options]
 import pkg/jsony
 import ./shared
 
@@ -122,9 +122,15 @@ type
     keyboards*: seq[Keyboard]
     # TODO: Missing tablets and touch (touchscreens) fields
   
-  Option* = object
+  OptionVal* = object 
+    # The option values could be represented as case object fields
     option*: string
-    # TODO: Add <typeName>: value field. Requires custom parsing, because there are many types
+    `int`*: Option[int] # Hyprland returns bool type options as int
+    `float`*: Option[float]
+    color*: Option[string] # TODO: Parse to actual color type
+    vec2*: Option[tuple[x, y: float]]
+    str*: Option[string]
+    gradient*: Option[string] # TODO: Make a type for gradients
     set*: bool
 
   Bind* = object
@@ -184,7 +190,7 @@ proc getVersion*(): HyprlandVersion = getDataAsObj[HyprlandVersion] DataCommand(
 proc getMonitors*(all: bool): seq[Monitor] = getDataAsObj[seq[Monitor]] DataCommand(kind: Monitors)
 proc getLayers*(): LayersOnMonitor = getDataAsObj[LayersOnMonitor] DataCommand(kind: Layers)
 proc getDevices*(): DeviceList = getDataAsObj[DeviceList] DataCommand(kind: Devices)
-proc getOption*(option: string): Option = getDataAsObj[Option] DataCommand(kind: GetOption, name: option)
+proc getOption*(option: string): OptionVal = getDataAsObj[OptionVal] DataCommand(kind: GetOption, name: option)
 proc getBinds*(): seq[Bind] = getDataAsObj[seq[Bind]] DataCommand(kind: Binds)
 proc getAnimations*(): seq[Animation] = getDataAsObj[seq[Animation]] DataCommand(kind: Animations)
 proc getWorkspaceRules*(): seq[WorkspaceRule] = getDataAsObj[seq[WorkspaceRule]] DataCommand(kind: WorkspaceRules)
