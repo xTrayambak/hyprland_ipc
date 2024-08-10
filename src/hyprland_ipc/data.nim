@@ -15,14 +15,14 @@ type
     CursorPosition = "cursorposition"
     Binds = "binds"
     Animations = "animations"
-    ConfigErrors = "configerrors" # Probably not that useful
-    Decorations = "decorations" # Probably not that useful
+    ConfigErrors = "configerrors" # Not implemented
+    Decorations = "decorations" # Not implemented
     GetOption = "getoption" # Getting the actual option value is not implemented yet
-    GlobalShortcuts = "globalshortcuts" # Could be useful when apps actually start using the shortcuts xdg portal
-    Instances = "instances" # Probably not that useful
+    GlobalShortcuts = "globalshortcuts" # Not implemented, could be useful when apps start using the shortcuts portal
+    Instances = "instances" # Not implemented
     Layouts = "layouts"
-    Splash = "splash" # Probably not that useful
-    SystemInfo = "systeminfo" # Probably not that useful
+    Splash = "splash" # Not implemented
+    SystemInfo = "systeminfo" # Not implemented
     WorkspaceRules = "workspacerules"
 
   DataCommand* = object
