@@ -1,4 +1,4 @@
-import std/[net, os, strformat]
+import std/[net, os, strformat, strutils]
 import hexencoding
 
 const BUF_SIZE* = 8192
@@ -17,7 +17,7 @@ type
     kJson
     kEmpty
 
-  CommandContent* = ref object
+  CommandContent* = object
     ## The content of a command, along with the data kind (JSON or empty)
     kind*: CommandKind
     data*: string
@@ -49,15 +49,14 @@ proc getSocketPath*(kind: SocketKind): string =
   else:
     fmt"/tmp/hypr/{hyprInstanceSig}/{socketName}"
 
-proc writeToSocket*(
-    path: string, content: CommandContent
-): tuple[success: bool, response: string] =
+proc sendRequestAndReadReply(path: string, content: CommandContent): string =
   ## Send some data to the Hyprland IPC socket(s).
   ## This function connects to the socket path provided, granted that it is a valid Hyprland IPC server and sends some data to it.
   ## 
   ## If successful, this function returns a tuple with the `success` field set to `true`. Otherwise,
   ## it returns with `success` set to false and the `response` field contains the error provided by the Hyprland instance.
   let socket = newSocket(AF_UNIX, SOCK_STREAM, IPPROTO_IP)
+  defer: close socket
 
   try:
     socket.connectUnix(path)
@@ -70,12 +69,27 @@ proc writeToSocket*(
 
   socket.send(content.data)
 
-  let response = socket.recv(100)
+  var response: string
+  var bytesRead = 8192
+  while bytesRead == 8192:
+    bytesRead = socket.recv(response, BUF_SIZE)
+    result.add response
 
-  if response != "ok":
-    return (success: false, response: response)
+proc writeToSocket*(
+  path: string,
+  content: CommandContent
+): tuple[success: bool, response: string] =
+  let response = sendRequestAndReadReply(path, content)
+  return (response == "ok", response)
 
-  return (success: true, response: "ok")
+proc sendJsonRequest*(
+  path: string,
+  content: CommandContent
+): tuple[success: bool, response: string] =
+
+  let response = sendRequestAndReadReply(path, content)
+  # On success Json commands will return json (that starts with the below chars), anything else is an error string
+  return (response[0] in {'\"', '{', '['}, response) 
 
 proc command*(kind: CommandKind, data: string): CommandContent =
   ## Construct a command with  

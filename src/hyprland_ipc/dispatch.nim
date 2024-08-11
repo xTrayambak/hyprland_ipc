@@ -1,5 +1,5 @@
 import std/[options, strutils, strformat]
-import shared
+import ./shared
 
 type
   WindowIdentifierKind* = enum
@@ -30,15 +30,15 @@ type
       pid*: uint32
 
   FullscreenType* = enum
-    Real
-    Maximize
-    NoParam
+    Real = "0"
+    Maximize = "1"
+    NoParam = ""
 
   Direction* = enum
-    Up
-    Down
-    Right
-    Left
+    Up = "u"
+    Down = "d"
+    Right = "r"
+    Left = "l"
 
   PositionKind* = enum
     kDelta
@@ -54,16 +54,16 @@ type
       ey*: int16
 
   CycleDirection* = enum
-    Next
-    Previous
+    Next = ""
+    Previous = "prev"
 
   WindowSwitchDirection* = enum
-    Back
-    Forward
+    Back = "b"
+    Forward = "f"
 
   WorkspaceOptions* = enum
-    AllPseudo
-    AllFloat
+    AllPseudo = "allpseudo"
+    AllFloat = "allfloat"
 
   WorkspaceIdentifierWithSpecialKind* = enum
     kWorkspaceId
@@ -352,42 +352,8 @@ proc `$`*(wIdent: WorkspaceIdentifierWithSpecial): string {.inline.} =
     of kEmpty:
       "empty"
 
-proc `$`*(opts: WorkspaceOptions): string {.inline.} =
-  result =
-    case opts
-    of AllPseudo: "allpseudo"
-    of AllFloat: "allfloat"
-
-proc `$`*(sdir: WindowSwitchDirection): string {.inline.} =
-  result =
-    case sdir
-    of Back: "b"
-    of Forward: "f"
-
-proc `$`*(cdir: CycleDirection): string {.inline.} =
-  result =
-    case cdir
-    of Next: ""
-    of Previous: "prev"
-
-proc `$`*(dir: Direction): string {.inline.} =
-  result =
-    case dir
-    of Up: "u"
-    of Down: "d"
-    of Left: "l"
-    of Right: "r"
-
-proc `$`*(ft: FullscreenType): string {.inline.} =
-  result =
-    case ft
-    of Real: "0"
-    of Maximize: "1"
-    of NoParam: ""
-
 proc `$`*(ident: WindowIdentifier): string {.inline.} =
-  result =
-    case ident.kind
+  result = case ident.kind:
     of kAddress:
       fmt"address:{ident.address}"
     of kClassRegex:
@@ -398,16 +364,14 @@ proc `$`*(ident: WindowIdentifier): string {.inline.} =
       fmt"title:{ident.title}"
 
 proc `$`*(pos: Position): string {.inline.} =
-  result =
-    case pos.kind
+  result = case pos.kind
     of kDelta:
       fmt"{pos.dx} {pos.dy}"
     of kExact:
       fmt"exact {pos.ex} {pos.ey}"
 
 proc `$`*(ident: MonitorIdentifier): string {.inline.} =
-  result =
-    case ident.kind
+  result = case ident.kind
     of ikDirection:
       $ident.direction
     of ikRelative:
@@ -564,6 +528,8 @@ proc genString*(cmd: DispatchType, dispatch: bool): string =
     result = fmt"moveintogroup{sep}{cmd.gDir}"
   of MoveOutOfGroup:
     result = "moveoutofgroup"
+  of KillActiveWindow:
+    result = "killactive"
   else:
     discard
 
@@ -578,5 +544,5 @@ proc dispatch*(dispatchType: DispatchType) =
 
   if not msg.success:
     raise newException(
-      HyprlandDefect, "dispatch command returned non-ok status: " & msg.response
+      CommandError, "dispatch command returned non-ok status: " & msg.response
     )
